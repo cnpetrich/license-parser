@@ -1,14 +1,14 @@
 import Foundation
 
 /// A Parser for creating ParsedLicense objects
-public class Parser{
+open class Parser{
   let regex: Regex = Regex()
 
   /// The AAMVA PDF417 raw barcode data being used for parsing
-  public var data: String
+  open var data: String
 
   /// The FieldParsing object to aide in parsing individual fields
-  public var fieldParser: FieldParsing
+  open var fieldParser: FieldParsing
 
   /**
     Initializes a new Parser
@@ -28,7 +28,7 @@ public class Parser{
 
     - Returns: A ParsedLicense with all available parsed fields
   */
-  public func parse() -> ParsedLicense{
+  open func parse() -> ParsedLicense{
     self.fieldParser = versionBasedFieldParsing(parseVersion())
 
     return License(
@@ -65,7 +65,7 @@ public class Parser{
     )
   }
 
-  private func versionBasedFieldParsing(version: String?) -> FieldParser{
+  fileprivate func versionBasedFieldParsing(_ version: String?) -> FieldParser{
     let defaultParser = FieldParser(data: self.data)
 
     guard let v = version else { return defaultParser }
@@ -88,7 +88,7 @@ public class Parser{
     }
   }
 
-  private func parseVersion() -> String?{
+  fileprivate func parseVersion() -> String?{
     return regex.firstMatch("\\d{6}(\\d{2})\\w+", data: data)
   }
 
